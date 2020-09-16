@@ -159,6 +159,9 @@ setTimeout(() => {
         item.qualifystr = item.qualify ? "是" : "否"
     })
 
+
+
+    var today='('+(new Date().getMonth() + 1) + '月' + new Date().getDate() + '日)';
   
 
     // 生成综合报表
@@ -166,17 +169,17 @@ setTimeout(() => {
     students.forEach((item) => {
         csvData.push({ "检查人": "", "姓名": item.name, "时长": item.timestr, "作业内容": "", "备注": item.desc, "是否合格": item.qualifystr, "总人数": students.length, "合格人数": students.filter((item) => item.qualify).length })
     })
-    var date = new Date();
-    var fileName = date.getMonth() + 1 + '月' + date.getDate() + '日' + '作业自查-' + homeworkDate + '作业.csv';
+   
+    var fileName = className+ "-"+ homeworkDate + '-作业自查-'+today+'.csv';
     exportCsvFile(fileName, csvData).then(() => {
-      console.log(`结果已经生成，请打开"${fileName}"文件查看`);
+      console.log(`自查报告已经生成，请打开"${fileName}"文件查看`);
     });
    
 
     // 生成没交作业的学生名单
     var noData = [];
     noData = csvData.filter((item) => { return item['是否合格'] === '否' && item['备注'] === '没有视频' });
-    var fileName2 = date.getMonth() + 1 + '月' + date.getDate() + '日' + '作业自查-' + homeworkDate + '作业没交的同学.csv';
+    var fileName2 = className+ "-"+ homeworkDate + '-作业没交的学生-'+today+'.csv';
     exportCsvFile(fileName2, noData).then(() => {
         console.log(`作业没交的名单已经生成，请打开"${fileName2}"文件查看`);
     });
@@ -185,7 +188,7 @@ setTimeout(() => {
     // 生成视频出问题的学生报表
     var errData = [];
     errData = csvData.filter((item) => { return item['是否合格'] === '否' && item['备注'] !== '没有视频' });
-    var fileName3 = date.getMonth() + 1 + '月' + date.getDate() + '日' + '作业自查-' + homeworkDate + '作业有问题的同学.csv';
+    var fileName3 = className+ "-"+ homeworkDate + '-作业视频有问题的学生-'+today+'.csv';
     exportCsvFile(fileName3, errData).then(() => {
        console.log(`作业有问题的名单已经生成，请打开"${fileName3}"文件查看`);
     });
